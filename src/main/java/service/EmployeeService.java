@@ -4,6 +4,7 @@ import dto.EmployeeCreateRequest;
 import dto.EmployeeResponse;
 import exceptions.EmployeeException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface EmployeeService {
@@ -17,4 +18,5 @@ public interface EmployeeService {
 
     EmployeeResponse getEmployeeById(Long id) throws  EmployeeException;
 
+    void deleteEmployeeById(Long id) throws EmployeeException, SQLException;
 }

@@ -7,6 +7,7 @@ import org.nocrala.tools.texttablefmt.Table;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -185,5 +186,9 @@ public class EmployeeView {
                 |=============================================|""");
         System.out.print("Choose an option(1-5): ");
         return Integer.parseInt(scanner.nextLine());
+    }
+
+    public Scanner getScanner() {
+        return scanner;
     }
 }

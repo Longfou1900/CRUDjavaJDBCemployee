@@ -8,6 +8,7 @@ import model.Employee;
 import repository.EmployeeRepository;
 import service.EmployeeService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
@@ -56,5 +57,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(
                         () -> new EmployeeException("Employee Not Found")
                 );
+    }
+
+    @Override
+    public void deleteEmployeeById(Long id) throws SQLException {
+        repository.delete(id);
     }
 }

@@ -6,6 +6,7 @@ import exceptions.EmployeeException;
 import service.EmployeeService;
 import view.EmployeeView;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class EmployeeController {
@@ -54,13 +55,35 @@ public class EmployeeController {
     }
 
     public void delete() {
+        try {
+            Long id = view.inputId();
+
+            EmployeeResponse response = service.getEmployeeById(id);
+
+            view.displayEmployeeResponse(response, "Employee To Delete");
+
+            System.out.print("Are you sure Delete? (y/n): ");
+            String confirm = view.getScanner().nextLine();
+
+            if (confirm.equalsIgnoreCase("y")) {
+
+                service.deleteEmployeeById(id);
+
+                System.out.println("Employee deleted successfully.");
+            }
+
+        } catch (EmployeeException e) {
+            System.out.println("Not Found");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void start() {
         while (true) {
             int option = view.showMenuAndGetOption();
             if (option == 0) {
-                System.out.println("!Existing.....");
+                System.out.println("!Exiting.....");
                 System.exit(0);
             }
             switch (option) {
@@ -76,7 +99,7 @@ public class EmployeeController {
                 }
                 case 5 -> delete();
 //               case 0 -> {
-//                   System.out.println("Existing..........!");
+//                   System.out.println("Exiting..........!");
 //                   break;
 //               }
                 default -> System.out.println("[!] - Invalid option.");

@@ -2,6 +2,7 @@ package repository;
 
 import config.DbConnection;
 //import database.EmployeeDb;
+import exceptions.EmployeeException;
 import model.Employee;
 
 import java.sql.*;
@@ -68,6 +69,32 @@ public class EmployeeRepository {
         }
         return singleRecord;
     }
+
+    public Employee delete(Long id) throws SQLException {
+        String sql = """
+            DELETE FROM employees
+            WHERE id = ?
+            """;
+
+        Connection connection = DbConnection.getConnection();
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setLong(1, id);
+            int rows = ps.executeUpdate();
+
+            if (rows == 0) {
+                throw new EmployeeException(
+                        "Employee ID not found."
+                );
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }
 //    private final EmployeeDb employeeDb;
 //
