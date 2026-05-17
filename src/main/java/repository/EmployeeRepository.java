@@ -95,6 +95,56 @@ public class EmployeeRepository {
         return null;
     }
 
+    public Employee update(Employee employee) {
+
+        String sql = """
+                    UPDATE employees
+                    SET first_name = ?,
+                        last_name = ?,
+                        salary = ?,
+                        hire_date = ?
+                    WHERE id = ?
+                    RETURNING *;
+                    """;
+
+        Employee updatedEmployee = new Employee();
+
+        try (
+                Connection conn = DbConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+
+            ps.setString(1, employee.getFirstName());
+            ps.setString(2, employee.getLastName());
+            ps.setDouble(3, employee.getSalary());
+            ps.setDate(
+                    4,
+                    Date.valueOf(employee.getHireDate())
+            );
+
+            ps.setLong(5, employee.getId());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+
+                    updatedEmployee.setId(rs.getLong("id"));
+                    updatedEmployee.setFirstName(rs.getString("first_name"));
+                    updatedEmployee.setLastName(rs.getString("last_name"));
+                    updatedEmployee.setSalary(rs.getDouble("salary"));
+                    updatedEmployee.setHireDate(rs.getDate("hire_date").toLocalDate());
+
+                } else {
+                    throw new EmployeeException("Employee ID not found.");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return updatedEmployee;
+    }
+
 }
 //    private final EmployeeDb employeeDb;
 //

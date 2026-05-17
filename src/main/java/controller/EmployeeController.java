@@ -30,7 +30,20 @@ public class EmployeeController {
     }
 
     public void update() {
+        try {
 
+            Long id = view.inputId();
+            EmployeeResponse oldEmployee = service.getEmployeeById(id);
+
+            view.displayEmployeeResponse( oldEmployee, "Current Employees");
+            EmployeeCreateRequest request = view.updateEmployee(oldEmployee);
+
+            EmployeeResponse updatedEmployee = service.updateEmployee(id, request);
+            view.displayEmployeeResponse( updatedEmployee, "Updated Employee");
+
+        } catch (EmployeeException e) {
+            System.out.println("Not Found 404");
+        }
     }
 
     public void getALl() {
@@ -72,10 +85,8 @@ public class EmployeeController {
                 System.out.println("Employee deleted successfully.");
             }
 
-        } catch (EmployeeException e) {
+        } catch (EmployeeException | SQLException e) {
             System.out.println("Not Found");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 

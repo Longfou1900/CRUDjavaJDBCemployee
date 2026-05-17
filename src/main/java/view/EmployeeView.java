@@ -6,10 +6,7 @@ import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.Table;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class EmployeeView {
@@ -59,13 +56,59 @@ public class EmployeeView {
 
     }
 
-    public Long inputId(){
-        while (true){
+    public EmployeeCreateRequest updateEmployee(EmployeeResponse oldEmployee) {
+        System.out.println("===============================================");
+        System.out.println("===|| Note 'Enter' for keep data, no change ||===");
+        System.out.println("===============================================");
+
+        System.out.print("First Name (" + oldEmployee.firstName() + "): ");
+        String firstName = scanner.nextLine();
+
+        if (firstName.isBlank()) {
+            firstName = oldEmployee.firstName();
+        }
+
+        System.out.print("Last Name (" + oldEmployee.lastName() + "): ");
+        String lastName = scanner.nextLine();
+
+        if (lastName.isBlank()) {
+            lastName = oldEmployee.lastName();
+        }
+
+        System.out.print("Salary (" + oldEmployee.salary() + "): ");
+        String salaryInput = scanner.nextLine();
+
+        Double salary;
+        if (salaryInput.isBlank()) {
+            salary = oldEmployee.salary();
+        } else {
+            salary = Double.parseDouble(salaryInput);
+        }
+
+        System.out.print("Hire Date (" + oldEmployee.hireDate() + ") [yyyy-MM-dd]: ");
+        String hireDateInput = scanner.nextLine();
+
+        LocalDate hireDate;
+        if (hireDateInput.isBlank()) {
+            hireDate = oldEmployee.hireDate();
+        } else {
+            hireDate = LocalDate.parse(hireDateInput);
+        }
+
+        return new EmployeeCreateRequest(
+                firstName,
+                lastName,
+                salary,
+                hireDate
+        );
+    }
+    public Long inputId() {
+        while (true) {
             System.out.print("[+] Input ID: ");
             try {
 //                long id = Long.parseLong(scanner.nextLine());
                 return Long.parseLong(scanner.nextLine());
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid ID format. Please input number");
             }
 
@@ -133,7 +176,7 @@ public class EmployeeView {
         table.addCell(response.id().toString(), 2);
 
         table.addCell("FirstName ");
-        table.addCell(response.fisrtName(), 2);
+        table.addCell(response.firstName(), 2);
 
         table.addCell("LastName");
         table.addCell(response.lastName(), 2);
@@ -156,7 +199,7 @@ public class EmployeeView {
         );
 
         String[] columns = {
-                " ID "," Fistrname ", " Lastname ", " Salary ", " Hire Date ",
+                " ID ", " Fistrname ", " Lastname ", " Salary ", " Hire Date ",
         };
         for (String column : columns) {
             table.addCell(column);
@@ -164,7 +207,7 @@ public class EmployeeView {
         responses.forEach(
                 user -> {
                     table.addCell(user.id().toString());
-                    table.addCell(user.fisrtName());
+                    table.addCell(user.firstName());
                     table.addCell(user.lastName());
                     table.addCell(user.salary().toString());
                     table.addCell(user.hireDate().toString());

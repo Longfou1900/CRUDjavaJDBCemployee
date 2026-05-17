@@ -63,4 +63,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployeeById(Long id) throws SQLException {
         repository.delete(id);
     }
+
+    @Override
+    public EmployeeResponse updateEmployee(Long id, EmployeeCreateRequest request) throws EmployeeException {
+        Employee employee = new Employee();
+
+        employee.setId(id);
+        employee.setFirstName(request.firstName());
+        employee.setLastName(request.lastName());
+        employee.setSalary(request.salary());
+        employee.setHireDate(request.hireDate());
+
+        Employee updatedEmployee =
+                repository.update(employee);
+
+        return mapper.toEmployeeResponse(updatedEmployee);
+    }
 }

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public record EmployeeResponse(
         Long id,
 
-        String fisrtName,
+        String firstName,
 
         String lastName,
 
