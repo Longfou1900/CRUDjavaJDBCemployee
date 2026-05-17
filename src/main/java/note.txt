@@ -1,0 +1,80 @@
+yyyy-MM-dd convert into dd-MM-yyyy
+"2024-04-22".split("-")
+"2023", "03", "11"
+Localdate.of(2023, 05, 11)
+
+------------------------------
+--------- 15-05-2026 ---------
+SQL: Structurd Query Language
+
+Database is an organized collection of data that can be seaily access and manage
++ file
+ - store unrelated data
+
++ DBMS
+ - store
+
+e.g. select * from employess;
+     delete from employees
+     where id=1 returning lastName;
+
+
+
++ running database server
+url, uername, password, name, port
+has to has
+1. Driver
+2. Connection instance
+3. "select * from employees" : preparestatement
+4. resultset
+
+
+docker : isolated enviroment from our host computer.
+docker image:
+docker container:
+
+students(id, name, score)
+select * from students where score>50;
+create view passed_stu as select * from students where score > 50;
+select * from passed_stu;
+
+
+--------------------
+shcema
+students usr
+
+select * from usr
+
+obj blog:
+ - title
+ - content text
+
+char(50), "hello"
+varchar(50), 'hello'
+jsonb = json b
+{
+    "title": "Java Guru",
+    "content": "hello world",
+}
+
+create table students(
+    id serial primary key,
+    score numeric check (score > 0)
+)
+
+create categories (
+ id serial primary key
+)
+
+create products(
+    id serial primary key,
+    category_id int reference
+    categories(id)
+)
+
+Statement, preparedStatement,
+CallableStatement
+"select * from employee where id = " + id + ";"
+"select * from employees where is = ?"
+
+
